@@ -19,6 +19,7 @@ const StyledButton = styled.button`
     font-family: Inter, sans-serif;
     font-weight: 500;
     cursor: pointer;
+    margin-top: 20px;
 
     &:hover {
         background-color: rgba(220, 31, 255, 0.4);

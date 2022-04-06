@@ -23,8 +23,8 @@ function WalletPage() {
 
     return (
         <div>
-            <h1 className='heading'>Wallet Page</h1>
-            <Paragraph>STFL currently supports only Phantom Wallet so in order to use the application you'll have to create one if you don't have it already. We are looking to add support for other providers in the future</Paragraph>
+            <Heading className='heading'>Wallet Page</Heading>
+            <Paragraph>STFL currently supports only Phantom Wallet so in order to use the application you'll have to create one if you don't have it already. We are looking to add support for other providers in the future.</Paragraph>
 
             {loading ?
                 <Heading size='medium'>Loading...</Heading> :
@@ -35,11 +35,11 @@ function WalletPage() {
                     {!walletAddress && <Paragraph size='big'>Please connect your Phantom Wallet. Thanks.</Paragraph>}
                     {!walletAddress && <Button onClick={connectPhantomWallet.bind(null, false)}>Connect Phantom Wallet</Button>}
 
-                    {walletAddress && <Heading size='medium'>Wallet connected.</Heading>}
+                    {walletAddress && <Heading size='medium'>Wallet connected. 👍</Heading>}
                     {walletAddress && <Heading size='medium'>Address: {walletAddress}</Heading>}
 
                     {walletAddress && walletBalance===null && <Button onClick={getWalletBalance}>Get Wallet Balance</Button>}
-                    {walletBalance!==null && <Heading size='medium'>Wallet Balance: {walletBalance}</Heading>}
+                    {walletAddress && walletBalance!==null && <Heading size='medium'>Wallet Balance: {walletBalance}</Heading>}
                 </>
             }
         </div>

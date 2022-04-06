@@ -2,7 +2,8 @@ import { useState } from 'react'
 import {
     PublicKey,
     Connection,
-    clusterApiUrl
+    clusterApiUrl,
+    LAMPORTS_PER_SOL
 } from '@solana/web3.js'
 
 import useStore from 'store'
@@ -56,10 +57,25 @@ export function useWalletActions() {
         }
     }
 
+    const airdropSol = async () => {
+        try {
+            const publicKey = new PublicKey(walletAddress)
+            const connection = new Connection(clusterApiUrl('devnet'), 'confirmed')
+            const fromAirdropSignature = await connection.requestAirdrop(publicKey, 1 * LAMPORTS_PER_SOL)
+
+            await connection.confirmTransaction(fromAirdropSignature)
+
+            getWalletBalance()
+        } catch (error) {
+            console.error(error)
+        }
+    }
+
     return {
         loading,
         visitPhantomWallet,
         connectPhantomWallet,
-        getWalletBalance
+        getWalletBalance,
+        airdropSol
     }
 }

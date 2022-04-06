@@ -3,19 +3,24 @@ import styled from 'styled-components'
 import Heading from 'components/Heading'
 import { Link } from 'react-router-dom'
 
+import useStore from 'store'
+
 function Header() {
+    const walletAddress = useStore(state => state.walletAddress)
+
     return (
         <Container>
             <StyledHeading size='big'>STFL</StyledHeading>
             <StyledLink to='/'>Home</StyledLink>
             <StyledLink to='/wallet'>Wallet</StyledLink>
+            {walletAddress && <StyledLink to='/airdrop'>Airdrop</StyledLink>}
             <StyledLink to='/about'>About</StyledLink>
         </Container>
     )
 }
 
 const Container = styled.div`
-    width: 100%;
+    width: 80%;
     height: 80px;
     background-color: rgba(0, 0, 0, 0.2);
     padding: 0 10%;
