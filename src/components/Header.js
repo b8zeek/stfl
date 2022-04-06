@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom'
 function Header() {
     return (
         <Container>
-            <StyledHeading type='big'>STFL</StyledHeading>
+            <StyledHeading size='big'>STFL</StyledHeading>
             <StyledLink to='/'>Home</StyledLink>
             <StyledLink to='/wallet'>Wallet</StyledLink>
             <StyledLink to='/about'>About</StyledLink>
