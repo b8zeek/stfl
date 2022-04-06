@@ -4,7 +4,7 @@ const Paragraph = ({ size, children }) =>
     <StyledParagraph size={size}>{children}</StyledParagraph>
 
 const StyledParagraph = styled.p`
-    line-height: 24px;
+    line-height: ${props => props.size === 'big' ? '32px' : '24px'};
     color: white;
     font-size: ${props => props.size === 'big' ? '24px' : '18px'};
     font-family: Inter, sans-serif;
