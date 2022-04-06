@@ -1,6 +1,6 @@
 import { createElement } from 'react'
 
-function Heading({ type, children, ...props }) {
+function Heading({ size, children, ...props }) {
     const sizes = {
         big: 'h1',
         medium: 'h2',
@@ -8,7 +8,7 @@ function Heading({ type, children, ...props }) {
     }
 
     return createElement(
-        sizes[type] || 'h1',
+        sizes[size] || 'h1',
         props,
         children
     )
