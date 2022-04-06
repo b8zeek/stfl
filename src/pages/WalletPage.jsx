@@ -1,11 +1,11 @@
 import { useEffect } from 'react'
 
-import Heading from '../components/Heading'
-import Paragraph from '../components/Paragraph'
-import Button from '../components/Button'
+import Heading from '@/components/Heading'
+import Paragraph from '@/components/Paragraph'
+import Button from '@/components/Button'
 
-import useStore from '../store'
-import { useWalletActions } from '../services/useWalletActions'
+import useStore from '@/store'
+import { useWalletActions } from '@/services/useWalletActions'
 
 function WalletPage() {
     const phantomInstalled = useStore(state => state.phantomWalletInstalled)

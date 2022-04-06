@@ -1,8 +1,8 @@
-import Heading from '../components/Heading'
-import Paragraph from '../components/Paragraph'
-import Button from '../components/Button'
+import Heading from '@/components/Heading'
+import Paragraph from '@/components/Paragraph'
+import Button from '@/components/Button'
 
-import { useWalletActions } from '../services/useWalletActions'
+import { useWalletActions } from '@/services/useWalletActions'
 
 function CreateTokenPage() {
     const { createNewToken, mintToken } = useWalletActions()
