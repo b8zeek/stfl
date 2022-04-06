@@ -1,10 +1,17 @@
+import { useState } from 'react'
+import {
+    PublicKey,
+    Connection,
+    clusterApiUrl
+} from '@solana/web3.js'
+
 import useStore from 'store'
 
-import { useState } from 'react'
-
 export function useWalletActions() {
+    const walletAddress = useStore(state => state.walletAddress)
     const setWalletAddress = useStore(state => state.setWalletAddress)
     const setPhantomWalletInstalled = useStore(state => state.setPhantomWalletInstalled)
+    const setWalletBalance = useStore(state => state.setWalletBalance)
 
     const [loading, setLoading] = useState(true)
 
@@ -37,9 +44,22 @@ export function useWalletActions() {
         }
     }
 
+    const getWalletBalance = async () => {
+        try {
+            const publicKey = new PublicKey(walletAddress)
+            const connection = new Connection(clusterApiUrl('devnet'), 'confirmed')
+            const walletBalace = await connection.getBalance(publicKey)
+
+            setWalletBalance(walletBalace)
+        } catch (error) {
+            console.error(error)
+        }
+    }
+
     return {
         loading,
         visitPhantomWallet,
-        connectPhantomWallet
+        connectPhantomWallet,
+        getWalletBalance
     }
 }

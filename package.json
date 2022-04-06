@@ -3,6 +3,7 @@
     "version": "0.1.0",
     "private": true,
     "dependencies": {
+        "@solana/spl-token": "^0.2.0",
         "@solana/web3.js": "^1.37.1",
         "@testing-library/jest-dom": "^5.16.4",
         "@testing-library/react": "^12.1.4",

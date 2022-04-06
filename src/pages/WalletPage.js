@@ -8,13 +8,15 @@ import useStore from 'store'
 import { useWalletActions } from 'services/useWalletActions'
 
 function WalletPage() {
-    const walletAddress = useStore(state => state.walletAddress)
     const phantomInstalled = useStore(state => state.phantomWalletInstalled)
+    const walletAddress = useStore(state => state.walletAddress)
+    const walletBalance = useStore(state => state.walletBalance)
 
     const {
         loading,
         visitPhantomWallet,
-        connectPhantomWallet
+        connectPhantomWallet,
+        getWalletBalance
     } = useWalletActions()
 
     useEffect(() => { connectPhantomWallet() }, [])
@@ -35,6 +37,9 @@ function WalletPage() {
 
                     {walletAddress && <Heading size='medium'>Wallet connected.</Heading>}
                     {walletAddress && <Heading size='medium'>Address: {walletAddress}</Heading>}
+
+                    {walletAddress && walletBalance===null && <Button onClick={getWalletBalance}>Get Wallet Balance</Button>}
+                    {walletBalance!==null && <Heading size='medium'>Wallet Balance: {walletBalance}</Heading>}
                 </>
             }
         </div>
