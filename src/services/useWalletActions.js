@@ -1,10 +1,18 @@
 import useStore from 'store'
 
+import { useState } from 'react'
+
 export function useWalletActions() {
     const setWalletAddress = useStore(state => state.setWalletAddress)
     const setPhantomWalletInstalled = useStore(state => state.setPhantomWalletInstalled)
 
+    const [loading, setLoading] = useState(true)
+
+    const visitPhantomWallet = () => window.open('https://phantom.app/', '_blank')
+
     const connectPhantomWallet = async (onlyIfTrusted = true) => {
+        setLoading(true)
+
         try {
             const { solana } = window
 
@@ -20,12 +28,18 @@ export function useWalletActions() {
                 setWalletAddress(walletAddress)
             } else {
                 setPhantomWalletInstalled(false)
-                if (!onlyIfTrusted) window.open('https://phantom.app/', '_blank')
+                if (!onlyIfTrusted) visitPhantomWallet()
             }
         } catch (error) {
             console.error(error)
+        } finally {
+            setLoading(false)
         }
     }
 
-    return { connectPhantomWallet }
+    return {
+        loading,
+        visitPhantomWallet,
+        connectPhantomWallet
+    }
 }
