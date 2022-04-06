@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-import Heading from './Heading'
+import Heading from 'components/Heading'
 import { Link } from 'react-router-dom'
 
 function Header() {
@@ -8,6 +8,7 @@ function Header() {
         <Container>
             <StyledHeading type='big'>STFL</StyledHeading>
             <StyledLink to='/'>Home</StyledLink>
+            <StyledLink to='/wallet'>Wallet</StyledLink>
             <StyledLink to='/about'>About</StyledLink>
         </Container>
     )
