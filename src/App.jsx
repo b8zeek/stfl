@@ -2,15 +2,15 @@ import { useEffect  } from 'react'
 import styled from 'styled-components'
 import { Routes, Route } from 'react-router-dom'
 
-import Header from 'components/Header'
-import HomePage from 'pages/HomePage'
-import WalletPage from 'pages/WalletPage'
-import AirdropPage from 'pages/AirdropPage'
-import CreateTokenPage from 'pages/CreateTokenPage'
-import AboutPage from 'pages/AboutPage'
+import Header from './components/Header'
+import HomePage from './pages/HomePage'
+import WalletPage from './pages/WalletPage'
+import AirdropPage from './pages/AirdropPage'
+import CreateTokenPage from './pages/CreateTokenPage'
+import AboutPage from './pages/AboutPage'
 
-import useStore from 'store'
-import { useWalletActions } from 'services/useWalletActions'
+import useStore from './store'
+import { useWalletActions } from './services/useWalletActions'
 
 function App() {
     const walletAddress = useStore(state => state.walletAddress)

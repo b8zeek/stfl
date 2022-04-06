@@ -15,7 +15,7 @@ import {
     createTransferInstruction
 } from '@solana/spl-token'
 
-import useStore from 'store'
+import useStore from '../store'
 
 export function useWalletActions() {
     const walletAddress = useStore(state => state.walletAddress)
@@ -132,6 +132,8 @@ export function useWalletActions() {
             fromWallet.publicKey,
             6
         )
+
+        console.log('MINT', mint.toString())
 
         let fromTokenAccount = await mint.getOrCreateAssociatedAccountInfo(fromWallet.publicKey)
         let toTokenAccount = await mint.getOrCreateAssociatedAccountInfo(publicKey)

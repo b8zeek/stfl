@@ -1,9 +1,9 @@
-import Heading from 'components/Heading'
-import Paragraph from 'components/Paragraph'
-import Button from 'components/Button'
+import Heading from '../components/Heading'
+import Paragraph from '../components/Paragraph'
+import Button from '../components/Button'
 
-import useStore from 'store'
-import { useWalletActions } from 'services/useWalletActions'
+import useStore from '../store'
+import { useWalletActions } from '../services/useWalletActions'
 
 function AirdropPage() {
     const walletAddress = useStore(state => state.walletAddress)
