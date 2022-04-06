@@ -39,7 +39,7 @@ function WalletPage() {
                     {walletAddress && <Heading size='medium'>Address: {walletAddress}</Heading>}
 
                     {walletAddress && walletBalance===null && <Button onClick={getWalletBalance}>Get Wallet Balance</Button>}
-                    {walletAddress && walletBalance!==null && <Heading size='medium'>Wallet Balance: {walletBalance}</Heading>}
+                    {walletAddress && walletBalance!==null && <Heading size='medium'>Wallet Balance: {walletBalance} Lamports</Heading>}
                 </>
             }
         </div>

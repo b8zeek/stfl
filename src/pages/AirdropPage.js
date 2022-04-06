@@ -14,8 +14,10 @@ function AirdropPage() {
     return (
         <div>
             <Heading className='heading'>Airdrop Page</Heading>
+            <Paragraph>Welcome to Airdrop Page, this is the place where you can airdrop some SOL coins in your wallet.</Paragraph>
+
             {walletAddress && walletBalance===null && <Button onClick={getWalletBalance}>Get Wallet Balance</Button>}
-            {walletAddress && walletBalance!==null && <Heading size='medium'>Wallet Balance: {walletBalance}</Heading>}
+            {walletAddress && walletBalance!==null && <Heading size='medium'>Wallet Balance: {walletBalance} Lamports</Heading>}
 
             {walletAddress && walletBalance!==null && <Button onClick={airdropSol}>Airdrop 1 SOL</Button>}
         </div>
