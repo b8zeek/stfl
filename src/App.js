@@ -6,6 +6,7 @@ import Header from 'components/Header'
 import HomePage from 'pages/HomePage'
 import WalletPage from 'pages/WalletPage'
 import AirdropPage from 'pages/AirdropPage'
+import CreateTokenPage from 'pages/CreateTokenPage'
 import AboutPage from 'pages/AboutPage'
 
 import useStore from 'store'
@@ -25,7 +26,10 @@ function App() {
                 <Routes>
                     <Route path='/' element={<HomePage />} />
                     <Route path='/wallet' element={<WalletPage />} />
-                    {walletAddress && <Route path='/airdrop' element={<AirdropPage />} />}
+                    {walletAddress && <>
+                        <Route path='/airdrop' element={<AirdropPage />} />
+                        <Route path='/create-token' element={<CreateTokenPage />} />
+                    </>}
                     <Route path='/about' element={<AboutPage />} />
                 </Routes>
             </Content>

@@ -13,7 +13,10 @@ function Header() {
             <StyledHeading size='big'>STFL</StyledHeading>
             <StyledLink to='/'>Home</StyledLink>
             <StyledLink to='/wallet'>Wallet</StyledLink>
-            {walletAddress && <StyledLink to='/airdrop'>Airdrop</StyledLink>}
+            {walletAddress && <>
+                <StyledLink to='/airdrop'>Airdrop</StyledLink>
+                <StyledLink to='/create-token'>Create Token</StyledLink>
+            </>}
             <StyledLink to='/about'>About</StyledLink>
         </Container>
     )
