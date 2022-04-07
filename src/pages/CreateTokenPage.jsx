@@ -8,14 +8,16 @@ import Button from '@components/Button'
 import useStore from '@store'
 import { useWalletActions } from '@services/useWalletActions'
 
-const WalletAccount = ({ name, publicKey }) =>
-    <WalletAccountContainer>
+const WalletAccount = ({ account: { name, publicKey }, onClick }) =>
+    <WalletAccountContainer onClick={onClick}>
         <Heading size='small'>Name: {name}</Heading>
         <Heading size='small'>Public address: {publicKey}</Heading>
     </WalletAccountContainer>
 
 function CreateTokenPage() {
     const walletAccounts = useStore(state => state.walletAccounts)
+    const selectedWallet = useStore(state => state.selectedWallet)
+    const setSelectedWallet = useStore(state => state.setSelectedWallet)
     const { createNewWalletAccount, createNewToken, mintToken } = useWalletActions()
 
     const [walletName, setWalletName] = useState('')
@@ -23,22 +25,41 @@ function CreateTokenPage() {
     return (
         <div>
             <Heading className='heading'>Create Token Page</Heading>
-
             <Paragraph>Welcome to Create Token Page, this is the place where you can create your own Solana token.</Paragraph>
 
-            <Paragraph>In order to create a token, first you need to create a wallet which will have mint authority. Give it a name so you can remember it easy.</Paragraph>
+            <Section>
+                <Heading size='medium' style={{ marginBottom: '20px' }}>Create New Wallet</Heading>
+                <Paragraph>In order to create a token, first you need to create a wallet which will have mint authority. Give it a name so you can remember it easy.</Paragraph>
 
-            <CreateWalletSection>
                 <input value={walletName} onChange={e => setWalletName(e.target.value)} />
-                <Button onClick={createNewWalletAccount.bind(null, walletName)}>Create New Wallet Account</Button>
-            </CreateWalletSection>
+                <Button onClick={createNewWalletAccount.bind(null, walletName)}>Generate New Wallet Account</Button>
+            </Section>
 
-            {walletAccounts.map(account =>
-                <WalletAccount key={account.publicKey} publicKey={account.publicKey} name={account.name} />
-            )}
+            {walletAccounts.length !== 0 &&
+                <Section>
+                    <Heading size='medium' style={{ marginBottom: '20px' }}>Your Wallet Accounts</Heading>
+                    {walletAccounts.map(account =>
+                        <WalletAccount
+                            key={account.publicKey}
+                            account={account}
+                            onClick={setSelectedWallet.bind(null, account)}
+                        />
+                    )}
+                </Section>
+            }
 
-            <br></br>
-            <Button onClick={mintToken}>Mint Test</Button>
+            <Section>
+                <Heading size='medium' style={{ marginBottom: '20px' }}>Create New Token</Heading>
+                <Paragraph>Please click on one of your wallets which you want to assign minting authority of the new token.</Paragraph>
+                {selectedWallet &&
+                    <>
+                        <Heading size='small'>Selected Wallet</Heading>
+                        <WalletAccount account={selectedWallet} />
+                    </>
+                }
+            </Section>
+
+            <Button onClick={createNewToken}>Create Token</Button>
         </div>
     )
 }
@@ -51,7 +72,7 @@ const WalletAccountContainer = styled.div`
     margin-bottom: 10px;
 `
 
-const CreateWalletSection = styled.div`
+const Section = styled.div`
     margin-bottom: 20px;
 `
 
