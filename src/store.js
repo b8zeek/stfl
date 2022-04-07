@@ -8,7 +8,9 @@ const useStore = create(set => ({
     setPhantomWalletInstalled: v => set({ phantomWalletInstalled: v }),
     setWalletAddress: v => set({ walletAddress: v }),
     setWalletBalance: v => set({ walletBalance: v }),
-    addNewWalletAccount: v => set({ walletAccounts: [ v ] })
+    addNewWalletAccount: v => set(state => ({
+        walletAccounts: [ ...state.walletAccounts, v ]
+    }))
 }))
 
 export default useStore
