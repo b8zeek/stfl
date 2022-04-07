@@ -1,9 +1,9 @@
 import styled from 'styled-components'
 
-import Heading from '@/components/Heading'
+import Heading from '@components/Heading'
 import { Link } from 'react-router-dom'
 
-import useStore from '@/store'
+import useStore from '@store'
 
 function Header() {
     const walletAddress = useStore(state => state.walletAddress)

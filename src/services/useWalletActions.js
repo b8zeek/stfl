@@ -15,7 +15,7 @@ import {
     createTransferInstruction
 } from '@solana/spl-token'
 
-import useStore from '@/store'
+import useStore from '@store'
 
 export function useWalletActions() {
     const walletAddress = useStore(state => state.walletAddress)
