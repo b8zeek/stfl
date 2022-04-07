@@ -14,8 +14,8 @@ const WalletAccount = ({ account: { name, publicKey }, onClick }) =>
         <Heading size='small'>Public address: {publicKey}</Heading>
     </ItemContainer>
 
-const TokenItem = ({ token: { tokenAddress, mintAuthority } }) =>
-    <ItemContainer>
+const TokenItem = ({ token: { tokenAddress, mintAuthority }, onClick }) =>
+    <ItemContainer onClick={onClick}>
         <Heading size='small'>Token Address: {tokenAddress}</Heading>
         <Heading size='small'>Mint Authority: {mintAuthority}</Heading>
     </ItemContainer>
@@ -25,9 +25,13 @@ function CreateTokenPage() {
     const selectedAccount = useStore(state => state.selectedAccount)
     const setSelectedAccount = useStore(state => state.setSelectedAccount)
     const createdTokens = useStore(state => state.createdTokens)
-    const { createNewWalletAccount, createNewToken } = useWalletActions()
+    const selectedToken = useStore(state => state.selectedToken)
+    const setSelectedToken = useStore(state => state.setSelectedToken)
+
+    const { createNewWalletAccount, createNewToken, mintToken } = useWalletActions()
 
     const [walletName, setWalletName] = useState('')
+    const [destination, setDestination] = useState('')
 
     return (
         <div>
@@ -74,10 +78,26 @@ function CreateTokenPage() {
                         <TokenItem
                             key={token.tokenAddress}
                             token={token}
+                            onClick={setSelectedToken.bind(null, token)}
                         />
                     )}
                 </Section>
             }
+
+            <Section>
+                <Heading size='medium' style={{ marginBottom: '20px' }}>TO BE TESTED: Mint Token</Heading>
+                <Paragraph>Select a token which you want to mint. After that enter the address of a wallet you want to send minted tokens to.</Paragraph>
+
+                {selectedToken &&
+                    <>
+                        <Heading size='small'>Selected Token</Heading>
+                        <TokenItem token={selectedToken} />
+                    </>
+                }
+
+                <input value={destination} onChange={e => setDestination(e.target.value)} />
+                <Button onClick={mintToken.bind(null, destination)}>Mint Selected Token</Button>
+            </Section>
         </div>
     )
 }
