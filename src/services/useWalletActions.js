@@ -22,6 +22,7 @@ export function useWalletActions() {
     const setWalletAddress = useStore(state => state.setWalletAddress)
     const setPhantomWalletInstalled = useStore(state => state.setPhantomWalletInstalled)
     const setWalletBalance = useStore(state => state.setWalletBalance)
+    const addNewWalletAccount = useStore(state => state.addNewWalletAccount)
 
     const [loading, setLoading] = useState(true)
 
@@ -37,8 +38,10 @@ export function useWalletActions() {
                 setPhantomWalletInstalled(true)
 
                 const response = onlyIfTrusted ?
-                await solana.connect({ onlyIfTrusted: true }) :
-                await solana.connect()
+                    await solana.connect({ onlyIfTrusted: true }) :
+                    await solana.connect()
+
+                console.log('WALLET', response)
 
                 const walletAddress = response.publicKey.toString()
 
@@ -78,6 +81,18 @@ export function useWalletActions() {
         } catch (error) {
             console.error(error)
         }
+    }
+
+    const createNewWalletAccount = async name => {
+        const wallet = Keypair.generate()
+
+        const publicKey = wallet.publicKey.toString()
+
+        addNewWalletAccount({
+            name,
+            wallet,
+            publicKey
+        })
     }
 
     const createNewToken = async () => {
@@ -182,6 +197,7 @@ export function useWalletActions() {
         connectPhantomWallet,
         getWalletBalance,
         airdropSol,
+        createNewWalletAccount,
         createNewToken,
         mintToken
     }
