@@ -9,16 +9,23 @@ import useStore from '@store'
 import { useWalletActions } from '@services/useWalletActions'
 
 const WalletAccount = ({ account: { name, publicKey }, onClick }) =>
-    <WalletAccountContainer onClick={onClick}>
+    <ItemContainer onClick={onClick}>
         <Heading size='small'>Name: {name}</Heading>
         <Heading size='small'>Public address: {publicKey}</Heading>
-    </WalletAccountContainer>
+    </ItemContainer>
+
+const TokenItem = ({ token: { tokenAddress, mintAuthority } }) =>
+    <ItemContainer>
+        <Heading size='small'>Token Address: {tokenAddress}</Heading>
+        <Heading size='small'>Mint Authority: {mintAuthority}</Heading>
+    </ItemContainer>
 
 function CreateTokenPage() {
     const walletAccounts = useStore(state => state.walletAccounts)
-    const selectedWallet = useStore(state => state.selectedWallet)
-    const setSelectedWallet = useStore(state => state.setSelectedWallet)
-    const { createNewWalletAccount, createNewToken, mintToken } = useWalletActions()
+    const selectedAccount = useStore(state => state.selectedAccount)
+    const setSelectedAccount = useStore(state => state.setSelectedAccount)
+    const createdTokens = useStore(state => state.createdTokens)
+    const { createNewWalletAccount, createNewToken } = useWalletActions()
 
     const [walletName, setWalletName] = useState('')
 
@@ -42,7 +49,7 @@ function CreateTokenPage() {
                         <WalletAccount
                             key={account.publicKey}
                             account={account}
-                            onClick={setSelectedWallet.bind(null, account)}
+                            onClick={setSelectedAccount.bind(null, account)}
                         />
                     )}
                 </Section>
@@ -51,20 +58,31 @@ function CreateTokenPage() {
             <Section>
                 <Heading size='medium' style={{ marginBottom: '20px' }}>Create New Token</Heading>
                 <Paragraph>Please click on one of your wallets which you want to assign minting authority of the new token.</Paragraph>
-                {selectedWallet &&
+                {selectedAccount &&
                     <>
                         <Heading size='small'>Selected Wallet</Heading>
-                        <WalletAccount account={selectedWallet} />
+                        <WalletAccount account={selectedAccount} />
                     </>
                 }
+                <Button onClick={createNewToken}>Create Token</Button>
             </Section>
 
-            <Button onClick={createNewToken}>Create Token</Button>
+            {createdTokens.length !== 0 &&
+                <Section>
+                    <Heading size='medium' style={{ marginBottom: '20px' }}>Created Tokens</Heading>
+                    {createdTokens.map(token =>
+                        <TokenItem
+                            key={token.tokenAddress}
+                            token={token}
+                        />
+                    )}
+                </Section>
+            }
         </div>
     )
 }
 
-const WalletAccountContainer = styled.div`
+const ItemContainer = styled.div`
     background-color: rgba(0, 0, 0, 0.3);
     border-radius: 20px;
     padding: 20px;

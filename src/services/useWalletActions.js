@@ -23,6 +23,8 @@ export function useWalletActions() {
     const setPhantomWalletInstalled = useStore(state => state.setPhantomWalletInstalled)
     const setWalletBalance = useStore(state => state.setWalletBalance)
     const addNewWalletAccount = useStore(state => state.addNewWalletAccount)
+    const selectedAccount = useStore(state => state.selectedAccount)
+    const addNewToken = useStore(state => state.addNewToken)
 
     const [loading, setLoading] = useState(true)
 
@@ -99,29 +101,23 @@ export function useWalletActions() {
         try {
             const connection = new Connection(clusterApiUrl('devnet'), 'confirmed')
 
-            const keypair = Keypair.generate()
-            console.log('Solana Public Address: ' + keypair.publicKey.toString())
-
-            const fromAirdropSignature = await connection.requestAirdrop(keypair.publicKey, 1000000000)
+            const fromAirdropSignature = await connection.requestAirdrop(selectedAccount.wallet.publicKey, 1 * LAMPORTS_PER_SOL)
             await connection.confirmTransaction(fromAirdropSignature)
 
-            const mint = await createMint(
+            const token = await createMint(
                 connection,
-                keypair,
-                keypair.publicKey,
-                null,
-                9,
-                TOKEN_PROGRAM_ID
+                selectedAccount.wallet,
+                selectedAccount.wallet.publicKey,
+                selectedAccount.wallet.publicKey,
+                6
             )
 
-            console.log('Mint Public Address: ' + mint.publicKey.toString())
-
-            const token = await mint.getOrCreateAssociatedAccountInfo(keypair.publicKey)
-
-            console.log('Token Public Address: ' + token.address.toString())
-
-            await mint.mintTo(token.address, keypair.publicKey, [], 1000000000)
-            console.log('DONE')
+            console.log('MINT', token)
+            console.log('MINT STR', token.toString())
+            addNewToken({
+                tokenAddress: token.toString(),
+                mintAuthority: selectedAccount.wallet.publicKey.toString()
+            })
         } catch (error) {
             console.error(error)
         }
