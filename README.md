@@ -8,17 +8,17 @@ P.S. Application currently uses only `devnet`.
 
 ### **`Use Flow`**
 
-#### Connect Phantom Wallet
+#### `Connect Phantom Wallet`
 
 In order to use the application you'll have to connect your **Phantom Wallet**. Navigate to Wallet page. If you don't have **Phantom Wallet**'s Chrome extension click on `Visit Phantom Wallet` button, install it and create a new account or log into the existing one. If you already meet those requirements, click on `Connect Phantom Wallet` button to allow the application to use your **Phantom Wallet** account which you can send tokens to.
 
 You can check your current SOL token balance by clicking on `Get Wallet Balance`.
 
-#### Airdropping Solana Tokens
+#### `Airdropping Solana Tokens`
 
 When you connect your wallet, you have the option to airdrop some SOL tokens to it. Navigate to Airdrop Page and click on `Airdrop 1 SOL` button. After a few seconds your wallet balance should be updated.
 
-#### Create Token
+#### `Create Token`
 
 Finally, we come to the create token functionality. To do this, navigate to Create Token page. In order to create a new token, you'll have to pass an account which will have mint authority. Currently, you can only create a new one, the option to passs an existing one will be added in the future.
 
