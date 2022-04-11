@@ -26,6 +26,6 @@ To create an account, click on `Generate New Wallet Account` button. You can opt
 
 To create a token, you need to select the wallet which will have minting authority. Click on one of your wallets and it should show up in Create New Token section under Selected Wallet subheading. Click on `Create Token` button and new token should be instantiated. The token should unlock Created Tokens section and it should be shown there.
 
-#### NEEDS TO BE TESTED AND UPDATED: Mint Token
+#### Mint and Send Token
 
 To mint created token, first you should select one of your created tokens by clicking on it. It should show up under Selected Token subheading. Paste the wallet you want to send minted tokens to public key in the input component and click `Mint Selected Token` button. You should receive one token.
