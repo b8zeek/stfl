@@ -14,10 +14,10 @@ const WalletAccount = ({ account: { name, publicKey }, onClick }) =>
         <Heading size='small'>Public address: {publicKey}</Heading>
     </ItemContainer>
 
-const TokenItem = ({ token: { tokenAddress, mintAuthority }, onClick }) =>
+const TokenItem = ({ token: { tokenAddress, mintAuthorityPublicKey }, onClick }) =>
     <ItemContainer onClick={onClick}>
         <Heading size='small'>Token Address: {tokenAddress}</Heading>
-        <Heading size='small'>Mint Authority: {mintAuthority}</Heading>
+        <Heading size='small'>Mint Authority: {mintAuthorityPublicKey}</Heading>
     </ItemContainer>
 
 function CreateTokenPage() {
@@ -28,7 +28,7 @@ function CreateTokenPage() {
     const selectedToken = useStore(state => state.selectedToken)
     const setSelectedToken = useStore(state => state.setSelectedToken)
 
-    const { createNewWalletAccount, createNewToken, mintToken, mint2, test } = useWalletActions()
+    const { createNewWalletAccount, createNewToken, mintToken } = useWalletActions()
 
     const [walletName, setWalletName] = useState('')
     const [destination, setDestination] = useState('')
@@ -85,7 +85,7 @@ function CreateTokenPage() {
             }
 
             <Section>
-                <Heading size='medium' style={{ marginBottom: '20px' }}>TO BE TESTED: Mint Token</Heading>
+                <Heading size='medium' style={{ marginBottom: '20px' }}>Mint Token</Heading>
                 <Paragraph>Select a token which you want to mint. After that enter the address of a wallet you want to send minted tokens to.</Paragraph>
 
                 {selectedToken &&
@@ -96,7 +96,7 @@ function CreateTokenPage() {
                 }
 
                 <input value={destination} onChange={e => setDestination(e.target.value)} />
-                <Button onClick={mint2.bind(null, destination)}>Mint Selected Token</Button>
+                <Button onClick={mintToken.bind(null, destination)}>Mint Selected Token</Button>
             </Section>
         </div>
     )
