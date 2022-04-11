@@ -14,7 +14,7 @@ function AirdropPage() {
     return (
         <div>
             <Heading className='heading'>Airdrop Page</Heading>
-            <Paragraph>Welcome to Airdrop Page, this is the place where you can airdrop some SOL coins in your wallet.</Paragraph>
+            <Paragraph>Welcome to Airdrop Page, this is the place where you can airdrop some SOL coins to your connected Phantom Wallet's SOL account.</Paragraph>
 
             {walletAddress && walletBalance===null && <Button onClick={getWalletBalance}>Get Wallet Balance</Button>}
             {walletAddress && walletBalance!==null && <Heading size='medium'>Wallet Balance: {walletBalance} Lamports</Heading>}

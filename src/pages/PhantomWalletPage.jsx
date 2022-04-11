@@ -23,7 +23,7 @@ function WalletPage() {
 
     return (
         <div>
-            <Heading className='heading'>Wallet Page</Heading>
+            <Heading className='heading'>Phantom Wallet Page</Heading>
             <Paragraph>STFL currently supports only Phantom Wallet so in order to use the application you'll have to create one if you don't have it already. We are looking to add support for other providers in the future.</Paragraph>
 
             {loading ?

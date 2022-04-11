@@ -4,10 +4,9 @@ import { Routes, Route } from 'react-router-dom'
 
 import Header from './components/Header'
 import HomePage from './pages/HomePage'
-import WalletPage from './pages/WalletPage'
+import PhantomWalletPage from './pages/PhantomWalletPage'
 import AirdropPage from './pages/AirdropPage'
 import CreateTokenPage from './pages/CreateTokenPage'
-import AboutPage from './pages/AboutPage'
 
 import useStore from './store'
 import { useWalletActions } from './services/useWalletActions'
@@ -25,12 +24,11 @@ function App() {
             <Content>
                 <Routes>
                     <Route path='/' element={<HomePage />} />
-                    <Route path='/wallet' element={<WalletPage />} />
+                    <Route path='/wallet' element={<PhantomWalletPage />} />
                     {walletAddress && <>
                         <Route path='/airdrop' element={<AirdropPage />} />
                         <Route path='/create-token' element={<CreateTokenPage />} />
                     </>}
-                    <Route path='/about' element={<AboutPage />} />
                 </Routes>
             </Content>
         </div>
