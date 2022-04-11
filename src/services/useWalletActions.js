@@ -13,7 +13,11 @@ import {
     createMint,
     TOKEN_PROGRAM_ID,
     createTransferInstruction,
-    createMintToInstruction
+    createMintToInstruction,
+    getOrCreateAssociatedTokenAccount,
+    getMint,
+    mintTo,
+    getAccount
 } from '@solana/spl-token'
 
 import useStore from '@store'
@@ -115,6 +119,7 @@ export function useWalletActions() {
             )
 
             addNewToken({
+                token,
                 tokenAddress: token.toString(),
                 mintAuthority: selectedAccount.wallet.publicKey.toString()
             })
@@ -153,69 +158,139 @@ export function useWalletActions() {
         }
     }
 
-    // const mintTokenssss = async () => {
-    //     const publicKey = new PublicKey(walletAddress)
-    //     const connection = new Connection(clusterApiUrl('devnet'), 'confirmed')
+    const mint2 = async destination => {
+        try {
+            const connection = new Connection(clusterApiUrl('devnet'), 'confirmed')
 
-    //     const fromWallet = Keypair.generate()
+            const payer = Keypair.generate()
+            const fromAirdropSignature = await connection.requestAirdrop(payer.publicKey, 1 * LAMPORTS_PER_SOL)
+            await connection.confirmTransaction(fromAirdropSignature)
 
-    //     console.log("Creator's Minting wallet public key: ",fromWallet.publicKey.toString());
-    //     console.log(fromWallet.secretKey.toString());
+            // const mintInfo = await getMint(connection, selectedToken.token)
+            // console.log('MINT INFO', mintInfo)
 
-    //     const fromAirdropSignature = await connection.requestAirdrop(fromWallet.publicKey, 1 * LAMPORTS_PER_SOL)
-    //     await connection.confirmTransaction(fromAirdropSignature)
-    //     console.log('Airdropped (transferred) 1 SOL to the fromWallet to carry out minting operations')
+            // console.log(
+            //     'Conn', connection,
+            //     'Sel Wall', selectedAccount,
+            //     'Sel Tok', selectedToken,
+            //     'Pub Key', new PublicKey('CVN4v7A5D29N9VeWGhMVFT59aKH9vrjTST1h9x7VfBwT')
+            // )
 
-    //     const mint = await createMint(
-    //         connection,
-    //         fromWallet,
-    //         fromWallet.publicKey,
-    //         fromWallet.publicKey,
-    //         6
-    //     )
+            // const mintInf = await mintTo(
+            //     connection,
+            //     selectedAccount.wallet,
+            //     selectedToken.token,
+            //     new PublicKey('CVN4v7A5D29N9VeWGhMVFT59aKH9vrjTST1h9x7VfBwT'),
+            //     selectedToken.mintAuthority,
+            //     100
+            // )
 
-    //     console.log('MINT', mint.toString())
+            // console.log(mintInf)
+            const tokenAccount = await getOrCreateAssociatedTokenAccount(
+                connection,
+                payer,
+                selectedToken.token,
+                new PublicKey('CVN4v7A5D29N9VeWGhMVFT59aKH9vrjTST1h9x7VfBwT')
+            )
 
-    //     let fromTokenAccount = await mint.getOrCreateAssociatedAccountInfo(fromWallet.publicKey)
-    //     let toTokenAccount = await mint.getOrCreateAssociatedAccountInfo(publicKey)
+            console.log(tokenAccount)
 
-    //     await mint.mintTo(
-    //         fromTokenAccount.address,
-    //         fromWallet.publicKey,
-    //         [],
-    //         1000000
-    //     )
+            let tokenAccountInfo = await getAccount(
+                connection,
+                tokenAccount.address
+            )
 
-    //     console.log('Initial mint successful')
+            console.log('TOK ACC INFO', tokenAccountInfo)
 
-    //     const transaction = new Transaction().add(
-    //         createTransferInstruction(
-    //             TOKEN_PROGRAM_ID,
-    //             fromTokenAccount.address,
-    //             toTokenAccount.address,
-    //             fromWallet.publicKey,
-    //             [],
-    //             1000000
-    //         )
-    //     )
+            await mintTo(
+                connection,
+                payer,
+                selectedToken.token,
+                tokenAccount.address,
+                selectedToken.mintAuthority,
+                100
+            )
 
-    //     const signature = await sendAndConfirmTransaction(
-    //         connection,
-    //         transaction,
-    //         [ fromWallet ],
-    //         { commitment: 'confirmed' }
-    //     )
+            tokenAccountInfo = await getAccount(
+                connection,
+                tokenAccount.address
+            )
 
-    //     const creatorTokenAddress = mint.publicKey
-    //     const creatorTokenAddressString = mint.publicKey.toString()
+            console.log('TOK ACC INFO', tokenAccountInfo)
+        } catch (error) {
+            console.error(error)
+        }
+    }
 
-    //     console.log('SIGNATURE: ', signature)
-    //     console.log('Creator Token Address: ', creatorTokenAddressString)
-    //     console.log('Creator Minting Wallet Address: ', mint.payer.publicKey.toString())
+    const test = async () => {
+        const payer = Keypair.generate()
+        const mintAuthority = Keypair.generate()
+        const freezeAuthority = Keypair.generate()
 
-    //     let creatorTokenBalance = await toTokenAccount.amount
-    //     console.log('Creators Token Balance: ', creatorTokenBalance)
-    // }
+        const connection = new Connection(
+            clusterApiUrl('devnet'),
+            'confirmed'
+        )
+
+        const fromAirdropSignature = await connection.requestAirdrop(payer.publicKey, 1 * LAMPORTS_PER_SOL)
+        await connection.confirmTransaction(fromAirdropSignature)
+
+        const mint = await createMint(
+            connection,
+            payer,
+            mintAuthority.publicKey,
+            freezeAuthority.publicKey,
+            9
+        )
+
+        console.log('MINT', mint, mint.toBase58())
+
+        let mintInfo = await getMint(
+            connection,
+            mint
+        )
+
+        console.log('SUPPLY', mintInfo, mintInfo.supply)
+
+        const tokenAccount = await getOrCreateAssociatedTokenAccount(
+            connection,
+            payer,
+            mint,
+            payer.publicKey
+        )
+
+        console.log('TOKEN ACC', tokenAccount.address.toBase58())
+
+        let tokenAccountInfo = await getAccount(
+            connection,
+            tokenAccount.address
+        )
+
+        console.log('TOK ACC INFO', tokenAccountInfo)
+
+        await mintTo(
+            connection,
+            payer,
+            mint,
+            new PublicKey('CVN4v7A5D29N9VeWGhMVFT59aKH9vrjTST1h9x7VfBwT'),
+            mintAuthority,
+            100
+        )
+
+        mintInfo = await getMint(
+            connection,
+            mint
+        )
+
+        console.log('SUPPLY', mintInfo, mintInfo.supply)
+
+        tokenAccountInfo = await getAccount(
+            connection,
+            tokenAccount.address
+        )
+
+        console.log('TOK ACC INFO', tokenAccountInfo)
+    }
 
     return {
         loading,
@@ -225,6 +300,8 @@ export function useWalletActions() {
         airdropSol,
         createNewWalletAccount,
         createNewToken,
-        mintToken
+        mintToken,
+        mint2,
+        test
     }
 }

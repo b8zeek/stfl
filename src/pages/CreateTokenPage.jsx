@@ -28,7 +28,7 @@ function CreateTokenPage() {
     const selectedToken = useStore(state => state.selectedToken)
     const setSelectedToken = useStore(state => state.setSelectedToken)
 
-    const { createNewWalletAccount, createNewToken, mintToken } = useWalletActions()
+    const { createNewWalletAccount, createNewToken, mintToken, mint2, test } = useWalletActions()
 
     const [walletName, setWalletName] = useState('')
     const [destination, setDestination] = useState('')
@@ -96,7 +96,7 @@ function CreateTokenPage() {
                 }
 
                 <input value={destination} onChange={e => setDestination(e.target.value)} />
-                <Button onClick={mintToken.bind(null, destination)}>Mint Selected Token</Button>
+                <Button onClick={mint2.bind(null, destination)}>Mint Selected Token</Button>
             </Section>
         </div>
     )
